@@ -47,8 +47,8 @@ Blocking state
 Some properties
 --------------------------------
 
-Positions: h^2                          -> 49 positions
-Number of states: 2(h-2)^2              -> 50 states
+    * Positions: h^2                          -> 49 positions
+    * Number of states: 2(h-2)^2              -> 50 states
 
 
 
