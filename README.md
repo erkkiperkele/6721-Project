@@ -48,7 +48,7 @@ Some properties
 --------------------------------
 
 Positions: h^2                          -> 49 positions
-# of states: 2(h-2)^2                   -> 50 states
+Number of states: 2(h-2)^2              -> 50 states
 
 
 
