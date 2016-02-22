@@ -42,6 +42,24 @@ Blocking state
     .       o                   o       .
     .   .               OR          .   .
     o   .   .                   .   .   o
+    
+Winning
+-------
+
+Need at least 2 adjacent positions 
+(one in Horizontal/Vertical axis and one in diagonal right or left axis)
+
+    x   x   x
+    x   X   x
+    x   x   x
+
+Need at least 5 of those 18 positions to win.    
+
+    x   x   .   x   x
+    x   x   x   x   x
+    .   x   X   x   .
+    x   x   x   x   x
+    x   x   .   x   x 
 
 
 Some properties
@@ -49,15 +67,4 @@ Some properties
 
 * Positions: h^2                          -> 49 positions
 * Number of states: 2(h-2)^2              -> 50 states
-
-* Evaluating winning conditions takes 18 positions
-  Need at least 5/18 to win.
-    x   x   .   x   x
-    x   x   x   x   x
-    .   x   X   x   .
-    x   x   x   x   x
-    x   x   .   x   x
-    
-
-
 
