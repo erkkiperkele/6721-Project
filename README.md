@@ -50,5 +50,14 @@ Some properties
 * Positions: h^2                          -> 49 positions
 * Number of states: 2(h-2)^2              -> 50 states
 
+* Evaluating winning conditions takes 18 positions
+  Need at least 5/18 to win.
+    x   x   .   x   x
+    x   x   x   x   x
+    .   x   X   x   .
+    x   x   x   x   x
+    x   x   .   x   x
+    
+
 
 
