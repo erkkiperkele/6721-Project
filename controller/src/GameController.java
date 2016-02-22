@@ -2,22 +2,28 @@ public class GameController {
 
     private IPlayer player1;
     private IPlayer player2;
+    private UIConsole console;
+    private BoardController boardController;
 
     public GameController() {
-        //TODO: get console injected
-
+        this.console = UIConsole.getInstance();
     }
 
     public void startNewGame(){
 
         initialize();
-        play();
+//        play();
 
     }
 
     private void initialize() {
-        //TODO:
-        // setBoard();
+        this.boardController = BoardController.getInstance();
+        console.setBoard(boardController.toString());
+        console.display();
+
+
+        playOn(new Position(1,1,Disc.Black));
+        playOn(new Position(7,13,Disc.White));
         // setPlayers();
     }
 
@@ -41,7 +47,9 @@ public class GameController {
     private void playOn(Position nextPosition) {
         //TODO:
         // - validate position
-        // - update UI
+        boardController.setPosition(nextPosition);
+        console.setBoard(boardController.toString());
+        console.display();
     }
 
     private Winner determineWinner() {
