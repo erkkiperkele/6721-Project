@@ -46,25 +46,24 @@ public class UIConsole {
     }
 
     public String askUser(String question) {
-        output.print(question);
-        display();
-
+        output.println(question);
         return input.nextLine();
     }
 
     public void informUser(String info) {
-        setFooter(info);
-        display();
+        output.println(info);
     }
 
     private void setFooter(String footer) {
         this.footer = footer;
     }
 
-    public void display() {
-        output.print(getHeader());
+    public void displayBoard() {
         output.print(getBody());
-        output.print(getFooter());
+    }
+
+    public void displayTitle() {
+        output.print(getHeader());
     }
 
     public void reset() {

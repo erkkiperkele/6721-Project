@@ -53,7 +53,7 @@ Need at least 2 adjacent positions
     x   X   x
     x   x   x
 
-Need at least 5 of those 18 positions to win.    
+Need at least 5 of those 20 positions to win.    
 
     x   x   .   x   x
     x   x   x   x   x
@@ -67,4 +67,5 @@ Some properties
 
 * Positions: h^2                          -> 49 positions
 * Number of states: 2(h-2)^2              -> 50 states
+* Width: h x 2 -1
 

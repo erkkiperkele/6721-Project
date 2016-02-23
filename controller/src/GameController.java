@@ -12,19 +12,31 @@ public class GameController {
     public void startNewGame(){
 
         initialize();
-//        play();
+        play();
 
     }
 
     private void initialize() {
+
+        setPlayers();
+        setBoard();
+
+        //TODO: Remove once implemented
+        runTests();
+    }
+
+    private void setPlayers() {
+        String player1Name = console.askUser("Who plays X?");
+        player1 = new HumanPlayer(console, player1Name, Disc.X);
+
+        String player2Name = console.askUser("Who plays O?");
+        player2 = new HumanPlayer(console, player2Name, Disc.O);
+    }
+
+    private void setBoard() {
         this.boardController = BoardController.getInstance();
         console.setBoard(boardController.toString());
-        console.display();
-
-
-        playOn(new Position(1,1,Disc.Black));
-        playOn(new Position(7,13,Disc.White));
-        // setPlayers();
+        console.displayBoard();
     }
 
     private void play() {
@@ -40,7 +52,6 @@ public class GameController {
             currentPlayer = currentPlayer == player1
                     ? player2
                     : player1;
-
         }
     }
 
@@ -49,11 +60,16 @@ public class GameController {
         // - validate position
         boardController.setPosition(nextPosition);
         console.setBoard(boardController.toString());
-        console.display();
+        console.displayBoard();
     }
 
     private Winner determineWinner() {
         //TODO: real logic to determine if game is over.
-        return Winner.None;
+        return Winner.Player2;
+    }
+
+    private void runTests(){
+        playOn(new Position(1,1,Disc.X));
+        playOn(new Position(7,13,Disc.O));
     }
 }

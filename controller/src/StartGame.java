@@ -9,7 +9,7 @@ public class StartGame {
     public static void main(String[] args) {
 
         UIConsole console = UIConsole.getInstance();
-        console.setTitle("Welcome to Pola\n");
+        console.informUser("Welcome to Pola\n");
 
         GameController game = new GameController();
 

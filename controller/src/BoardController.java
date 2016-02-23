@@ -13,6 +13,11 @@ public class BoardController {
         this.board = new Board();
     }
 
+
+    public void setPosition(Position position) {
+        board.setPosition(position);
+    }
+
     public String toString(){
         String boardString = "";
 
@@ -46,10 +51,5 @@ public class BoardController {
             ++i;
         }
         return tabs;
-    }
-
-
-    public void setPosition(Position position) {
-         board.setPosition(position);
     }
 }

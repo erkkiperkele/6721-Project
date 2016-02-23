@@ -10,9 +10,17 @@ public class Position {
         this.occupiedBy = occupiedBy;
     }
 
-    public Position(String row, String column, Disc occupiedBy) {
-        this.colNumber = Integer.parseInt(column);
-        this.rowNumber = Integer.parseInt(row);       //TODO: Won't work. Implement properly
+    public Position(String positionPlayed, Disc occupiedBy) {
+
+        //REFACTOR: Extract this in its own class.
+        //TODO: Support for letters
+        String[] coordinates = positionPlayed
+                .trim()
+                .toLowerCase()
+                .split(",");
+
+        this.colNumber = Integer.parseInt(coordinates[0]);
+        this.rowNumber = Integer.parseInt(coordinates[1]);
         this.occupiedBy = occupiedBy;
     }
 
@@ -23,9 +31,9 @@ public class Position {
     public String getOccupiedByString(){
 
         switch (this.occupiedBy){
-            case Black:
+            case X:
                 return "X";
-            case White:
+            case O:
                 return "O";
             default:
                 return ".";

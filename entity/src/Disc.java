@@ -1,5 +1,5 @@
 public enum Disc {
-    Black,
-    White,
+    X,
+    O,
     None
 }
