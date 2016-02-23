@@ -13,7 +13,7 @@ public class HumanPlayer implements IPlayer {
 
     @Override
     public Position takeTurn() {
-        String coordinates =  console.askUser("Where do you want to play? (col,row)");
+        String coordinates =  console.askUser("Where do you want to play? (row, col)");
 
         Position position = new Position(coordinates, disc);
         return position;
