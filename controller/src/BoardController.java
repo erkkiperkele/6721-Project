@@ -18,6 +18,10 @@ public class BoardController {
         board.setPosition(position);
     }
 
+    public Disc getOccupiedBy(int row, int col) {
+        return board.getOccupiedBy(row,col);
+    }
+
     public String toString(){
         String boardString = "";
 

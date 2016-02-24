@@ -29,7 +29,7 @@ public class Board {
 
     public List<Position> getRow(int rowNumber){
 
-        int start = getPositionIndex(rowNumber,1);
+        int start = getPositionIndex(rowNumber,height - rowNumber + 1);
         int end = start + 2 * rowNumber -2;
 
         List<Position> row = new ArrayList<>();
@@ -47,6 +47,19 @@ public class Board {
         return board[index];
     }
 
+    public Disc getOccupiedBy(int row, int col){
+
+        boolean colIsValid = col > (height - row) && col < (height + row);
+        boolean rowIsValid = row > 0 && row < 8;
+
+        if (colIsValid && rowIsValid){
+            return getPosition(row,col).getOccupiedBy();
+        }
+        else{
+            return Disc.Invalid;
+        }
+    }
+
     public void setPosition(Position position){
         int index = getPositionIndex(position.getRowNumber(), position.getColNumber());
         board[index] = position;
@@ -54,7 +67,8 @@ public class Board {
 
     private int getPositionIndex(int rowNumber, int colNumber) {
         int rowIndex = rowNumber * (rowNumber-2) + 1;
-        int index = rowIndex + colNumber -1;
+        int index = rowIndex - height+ rowNumber + colNumber -1;
+//        int index = rowIndex + colNumber -1;
         return index;
     }
 }

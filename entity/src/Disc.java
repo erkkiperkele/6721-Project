@@ -1,5 +1,6 @@
 public enum Disc {
     X,
     O,
-    None
+    None,
+    Occupied, Invalid
 }

@@ -19,13 +19,17 @@ public class Position {
                 .toLowerCase()
                 .split(",");
 
-        this.colNumber = Integer.parseInt(coordinates[0]);
-        this.rowNumber = Integer.parseInt(coordinates[1]);
+        this.rowNumber = Integer.parseInt(coordinates[0]);
+        this.colNumber = Integer.parseInt(coordinates[1]);
         this.occupiedBy = occupiedBy;
     }
 
     public Position() {
         this.occupiedBy = Disc.None;
+    }
+
+    public Disc getOccupiedBy() {
+        return occupiedBy;
     }
 
     public String getOccupiedByString(){

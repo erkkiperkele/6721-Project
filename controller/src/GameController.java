@@ -46,8 +46,15 @@ public class GameController {
 
         while (winner == Winner.None)
         {
-            currentPosition = currentPlayer.takeTurn();
-            playOn(currentPosition);
+            Disc occupiedBy = Disc.None;
+            while (occupiedBy != currentPlayer.getDiscColor()){
+                currentPosition = currentPlayer.takeTurn();
+                occupiedBy = playOn(currentPosition);
+                if(occupiedBy != currentPlayer.getDiscColor()){
+                    console.informUser(occupiedBy + " : This position is not available. Please try again.");
+                }
+            }
+
             winner = determineWinner();
             currentPlayer = currentPlayer == player1
                     ? player2
@@ -55,12 +62,20 @@ public class GameController {
         }
     }
 
-    private void playOn(Position nextPosition) {
-        //TODO:
-        // - validate position
-        boardController.setPosition(nextPosition);
-        console.setBoard(boardController.toString());
-        console.displayBoard();
+    private Disc playOn(Position nextPosition) {
+
+        Disc occupiedBy = boardController.getOccupiedBy(nextPosition.getRowNumber(), nextPosition.getColNumber());
+
+        if(occupiedBy == Disc.None){
+            boardController.setPosition(nextPosition);
+            console.setBoard(boardController.toString());
+            console.displayBoard();
+            occupiedBy = nextPosition.getOccupiedBy();
+        }
+        else if (occupiedBy == Disc.O || occupiedBy == Disc.X){
+            occupiedBy = Disc.Occupied;
+        }
+        return occupiedBy;
     }
 
     private Winner determineWinner() {
@@ -69,7 +84,9 @@ public class GameController {
     }
 
     private void runTests(){
-        playOn(new Position(1,1,Disc.X));
+        playOn(new Position(1,7,Disc.X));
+        playOn(new Position(2,8,Disc.O));
+        playOn(new Position(7,7,Disc.O));
         playOn(new Position(7,13,Disc.O));
     }
 }
