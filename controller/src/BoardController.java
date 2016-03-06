@@ -14,7 +14,12 @@ public class BoardController {
     }
 
     public void setPosition(Position position) {
-        board.setPosition(position);
+        try{
+            board.setPosition(position);
+        }
+        catch(IndexOutOfBoundsException e) {
+            // It is tolerated to try and set an invalid position.
+        }
     }
 
     public Disc getOccupiedBy(int row, int col) {

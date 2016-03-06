@@ -13,7 +13,6 @@ public class Position {
     public Position(String positionPlayed, Disc occupiedBy) {
 
         //REFACTOR: Extract this in its own class.
-        //TODO: Support for letters
         String[] coordinates = positionPlayed
                 .trim()
                 .toLowerCase()

@@ -25,6 +25,11 @@ public class HumanPlayer implements IPlayer {
     public Position takeTurn() {
         String coordinates = console.askUser(this.name + " ,where do you want to play? (row, col)");
 
+        if(coordinates.toLowerCase().contains("exit")){
+            console.informUser("thanks for playing!");
+            System.exit(1);
+        }
+
         Position position = new Position(coordinates, disc);
         return position;
     }

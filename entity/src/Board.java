@@ -63,10 +63,17 @@ public class Board {
         }
     }
 
-    public void setPosition(Position position) {
-        int index = getPositionIndex(position.getRow(), position.getCol());
-        ++discCount;
-        board[index] = position;
+    public void setPosition(Position position)
+        throws IndexOutOfBoundsException {
+
+        if (isValid(position.getRow(), position.getCol())) {
+            int index = getPositionIndex(position.getRow(), position.getCol());
+            ++discCount;
+            board[index] = position;
+        }
+        else{
+            throw new IndexOutOfBoundsException("board.setPosition(): position is invalid");
+        }
     }
 
     private int getPositionIndex(int rowNumber, int colNumber) {
