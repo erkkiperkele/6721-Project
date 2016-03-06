@@ -60,6 +60,12 @@ Need at least 5 of those 20 positions to win.
     .   x   X   x   .
     x   x   x   x   x
     x   x   .   x   x 
+    
+    1   2   .   x   x
+    x   3   4   x   x
+    .   x   5   x   .
+    x   x   x   x   x
+    x   x   .   x   x 
 
 
 Some properties

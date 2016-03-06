@@ -28,6 +28,13 @@ public class Position {
         this.occupiedBy = Disc.None;
     }
 
+    public Position(Position source) {
+
+        this.rowNumber = source.getRow();
+        this.colNumber = source.getCol();
+        this.occupiedBy = source.getOccupiedBy();
+
+    }
     public Disc getOccupiedBy() {
         return occupiedBy;
     }
@@ -44,11 +51,11 @@ public class Position {
         }
     }
 
-    public int getRowNumber() {
+    public int getRow() {
         return rowNumber;
     }
 
-    public int getColNumber() {
+    public int getCol() {
         return colNumber;
     }
 }

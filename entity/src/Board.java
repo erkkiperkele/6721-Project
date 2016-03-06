@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 public class Board {
@@ -7,6 +6,7 @@ public class Board {
     private final int height = 7;
     private final int width = 13;
     private Position[] board;
+    private int discCount;
 
 
     public Board() {
@@ -42,9 +42,13 @@ public class Board {
         return row;
     }
 
-    public Position getPosition(int rowNumber, int colNumber) {
-        int index = getPositionIndex(rowNumber, colNumber);
-        return board[index];
+    public Position getPosition(int row, int col) {
+        if(isValid(row, col)){
+            int index = getPositionIndex(row, col);
+            return board[index];
+        }
+
+        return new Position(row, col, Disc.Invalid);
     }
 
     public Disc getOccupiedBy(int row, int col){
@@ -61,14 +65,29 @@ public class Board {
     }
 
     public void setPosition(Position position){
-        int index = getPositionIndex(position.getRowNumber(), position.getColNumber());
+        int index = getPositionIndex(position.getRow(), position.getCol());
+        ++discCount;
         board[index] = position;
     }
 
     private int getPositionIndex(int rowNumber, int colNumber) {
         int rowIndex = rowNumber * (rowNumber-2) + 1;
         int index = rowIndex - height+ rowNumber + colNumber -1;
-//        int index = rowIndex + colNumber -1;
         return index;
+    }
+
+    public boolean isFull() {
+        return discCount == height * height;
+    }
+
+    private boolean isValid(int row, int col){
+
+        boolean colIsValid = col > (height - row) && col < (height + row);
+        if (!colIsValid){
+            return colIsValid;
+        }
+
+        boolean rowIsValid = row > 0 && row < 8;
+        return rowIsValid;
     }
 }
