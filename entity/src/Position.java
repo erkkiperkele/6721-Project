@@ -33,22 +33,10 @@ public class Position {
         this.rowNumber = source.getRow();
         this.colNumber = source.getCol();
         this.occupiedBy = source.getOccupiedBy();
-
     }
+
     public Disc getOccupiedBy() {
         return occupiedBy;
-    }
-
-    public String getOccupiedByString(){
-
-        switch (this.occupiedBy){
-            case X:
-                return "X";
-            case O:
-                return "O";
-            default:
-                return ".";
-        }
     }
 
     public int getRow() {
@@ -57,5 +45,16 @@ public class Position {
 
     public int getCol() {
         return colNumber;
+    }
+
+    public String getOccupiedByString() {
+        switch (this.occupiedBy) {
+            case X:
+                return "X";
+            case O:
+                return "O";
+            default:
+                return ".";
+        }
     }
 }

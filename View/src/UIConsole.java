@@ -8,7 +8,6 @@ public class UIConsole {
 
     private String header;
     private String body;
-    private String footer;
     private PrintStream output;
     private Scanner input;
 
@@ -18,10 +17,9 @@ public class UIConsole {
 
         this.header = "Welcome to Pola!";
         this.body = "\n\n\n\n\n\n\n\n\n";
-        this.footer = "";
     }
 
-    public static UIConsole getInstance(){
+    public static UIConsole getInstance() {
         return instance;
     }
 
@@ -31,14 +29,6 @@ public class UIConsole {
 
     private String getBody() {
         return body;
-    }
-
-    private String getFooter() {
-        return footer;
-    }
-
-    public void setTitle(String header) {
-        this.header = header + "\n";
     }
 
     public void setBoard(String body) {
@@ -54,21 +44,12 @@ public class UIConsole {
         output.println(info);
     }
 
-    private void setFooter(String footer) {
-        this.footer = footer;
-    }
-
     public void displayBoard() {
         output.print(getBody());
-    }
-
-    public void displayTitle() {
-        output.print(getHeader());
     }
 
     public void reset() {
         this.header = "";
         this.body = "";
-        this.footer = "";
     }
 }

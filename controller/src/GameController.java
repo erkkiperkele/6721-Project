@@ -14,11 +14,11 @@ public class GameController {
         initialize();
 
 //        //REFACTOR: To be extracted in its own class
-//        testXWinsRight();
-//        testOWinsLeft();
-//        testXUnPolarized();
-//        testTie();
-//        testNotTie();
+        testXWinsRight();
+        testOWinsLeft();
+        testXUnPolarized();
+        testTie();
+        testNotTie();
 
         play();
 
@@ -87,6 +87,7 @@ public class GameController {
 
 
     //TODO: To be extracted in its own class.
+    //Just create a main test with an instance of the board controller. (bc is the SUT)
     private void testXWinsRight() {
         boardController.resetBoard();
         Disc winner = Disc.None;

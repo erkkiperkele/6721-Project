@@ -12,11 +12,11 @@ public class PositionState {
         this.stateOwner = position.getOccupiedBy();
     }
 
-    public void addPositionToLadder(Position position){
+    public void addPositionToLadder(Position position) {
         ladder.add(position);
     }
 
-    public void addPositionToPolarization(Position position){
+    public void addPositionToPolarization(Position position) {
         polarization.add(position);
     }
 

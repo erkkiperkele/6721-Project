@@ -4,18 +4,14 @@ public class BoardController {
     private static BoardController ourInstance = new BoardController();
 
     private Board board;
-    private Coor[] stateCoor;
 
     public static BoardController getInstance() {
-
         return ourInstance;
     }
 
     private BoardController() {
-
         this.board = new Board();
     }
-
 
     public void setPosition(Position position) {
         board.setPosition(position);
@@ -25,45 +21,8 @@ public class BoardController {
         return board.getOccupiedBy(row, col);
     }
 
-    public void resetBoard(){
+    public void resetBoard() {
         this.board = new Board();
-    }
-
-    public String toString() {
-        String boardString = "";
-
-        int rowNumber = 1;
-        int boarHeight = this.board.getHeight();
-        while (rowNumber <= boarHeight) {
-            boardString += printRow(rowNumber) + "\n";
-            ++rowNumber;
-        }
-
-        boardString += "\n1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13 \n";
-        return boardString;
-    }
-
-    private String printRow(int rowNumber) {
-        List<Position> row = board.getRow(rowNumber);
-        int whiteSpacesCount = board.getHeight() - rowNumber;
-
-        String rowString = printTabs(whiteSpacesCount);
-
-        for (Position position : row) {
-            rowString += position.getOccupiedByString() + "\t";
-        }
-        rowString += printTabs(whiteSpacesCount - 1);
-        return rowString;
-    }
-
-    private String printTabs(int whiteSpacesCount) {
-        String tabs = "";
-        int i = 0;
-        while (i < whiteSpacesCount) {
-            tabs += "\t";
-            ++i;
-        }
-        return tabs;
     }
 
     public Disc getWinner(Position position) {
@@ -116,7 +75,6 @@ public class BoardController {
         }
 
 
-//        Coor[] polarizationCoor = coordinatesHelper.getPolarizationCoor(stateName, stateCoor);
         int invert = stateName == StateName.Left
                 ? 1
                 : -1;
@@ -125,7 +83,6 @@ public class BoardController {
                 new Coor(ladderCoor[0].getX(), ladderCoor[0].getY() + 2)
         };
         for (Coor coor : polarizationCoor) {
-
 
             int colToCheck = position.getCol() + coor.getX();
             int rowToCheck = position.getRow() + coor.getY();
@@ -140,5 +97,42 @@ public class BoardController {
         }
 
         return positionState;
+    }
+
+    public String toString() {
+        String boardString = "";
+
+        int rowNumber = 1;
+        int boarHeight = this.board.getHeight();
+        while (rowNumber <= boarHeight) {
+            boardString += printRow(rowNumber) + "\n";
+            ++rowNumber;
+        }
+
+        boardString += "\n1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13 \n";
+        return boardString;
+    }
+
+    private String printRow(int rowNumber) {
+        List<Position> row = board.getRow(rowNumber);
+        int whiteSpacesCount = board.getHeight() - rowNumber;
+
+        String rowString = printTabs(whiteSpacesCount);
+
+        for (Position position : row) {
+            rowString += position.getOccupiedByString() + "\t";
+        }
+        rowString += printTabs(whiteSpacesCount - 1);
+        return rowString;
+    }
+
+    private String printTabs(int whiteSpacesCount) {
+        String tabs = "";
+        int i = 0;
+        while (i < whiteSpacesCount) {
+            tabs += "\t";
+            ++i;
+        }
+        return tabs;
     }
 }

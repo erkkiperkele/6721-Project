@@ -12,14 +12,6 @@ public class HumanPlayer implements IPlayer {
     }
 
     @Override
-    public Position takeTurn() {
-        String coordinates =  console.askUser(this.name + " ,where do you want to play? (row, col)");
-
-        Position position = new Position(coordinates, disc);
-        return position;
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }
@@ -27,5 +19,13 @@ public class HumanPlayer implements IPlayer {
     @Override
     public Disc getDiscColor() {
         return this.disc;
+    }
+
+    @Override
+    public Position takeTurn() {
+        String coordinates = console.askUser(this.name + " ,where do you want to play? (row, col)");
+
+        Position position = new Position(coordinates, disc);
+        return position;
     }
 }

@@ -1,20 +1,9 @@
 public class coordinatesHelper {
 
-    public static Coor[] getPolarizationCoor(StateName stateName, Coor stateCoor) {
-        int symFactor = stateName == StateName.Left
-                ? 1
-                : -1;
-
-        Coor[] coorToCheck = new Coor[]{
-                new Coor((2 - stateCoor.getX()) * symFactor, 0 - stateCoor.getY()),
-                new Coor((0 - stateCoor.getX()) * symFactor, -2 - stateCoor.getY()),
-        };
-        return coorToCheck;
-    }
-
     public static Coor[] getLadderCoor(StateName stateName, Coor stateCoor) {
 
-        //By default, we check the left ladder. For the right ladder, need to invert the col coordinates
+        // By default, we check the left ladder.
+        // For the right ladder, we need to invert the col coordinates
         int symFactor = stateName == StateName.Left
                 ? 1
                 : -1;
