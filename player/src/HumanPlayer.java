@@ -22,7 +22,7 @@ public class HumanPlayer implements IPlayer {
     }
 
     @Override
-    public Position takeTurn() {
+    public IPosition takeTurn() {
         String coordinates = console.askUser(this.name + " ,where do you want to play? (row, col)");
 
         if(coordinates.toLowerCase().contains("exit")){
@@ -30,7 +30,7 @@ public class HumanPlayer implements IPlayer {
             System.exit(1);
         }
 
-        Position position = new Position(coordinates, disc);
+        IPosition position = new Position(coordinates, disc);
         return position;
     }
 }

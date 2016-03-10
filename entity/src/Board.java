@@ -5,14 +5,32 @@ public class Board {
 
     private final int height = 7;
     private final int width = 13;
-    private Position[] board;
+    private IPosition[] board;
     private int discCount;
 
-
     public Board() {
-        board = new Position[height * height];
-        populateBoard();
+        this.board = new Position[height * height];
 
+        this.discCount = 0;
+        populateBoard();
+    }
+
+    public Board(Board board) {
+        this.board = new Position[height * height];
+
+        discCount = board.getDiscCount();
+
+        int index = 0;
+        for (IPosition position : board.getPositions()){
+            this.board[index] = new Position(position);
+            ++index;
+        }
+    }
+
+    public Board(IPosition[] positions){
+
+        this.board = positions;
+        this.discCount = height * height;
     }
 
     public int getHeight() {
@@ -20,19 +38,29 @@ public class Board {
     }
 
     private void populateBoard() {
-        int i = this.board.length;
-        while (i > 0) {
-            this.board[i - 1] = new Position();
-            --i;
+
+        int index = 0;
+        int row = 1;
+        while (row <= height){
+            int colmin = height-row+1;
+            int colmax = height +row-1;
+            int col = colmin;
+            while(col <= colmax){
+                this.board[index] = new Position(row, col, Disc.None);
+                ++index;
+                ++col;
+            }
+            ++row;
         }
+
     }
 
-    public List<Position> getRow(int rowNumber) {
+    public List<IPosition> getRow(int rowNumber) {
 
         int start = getPositionIndex(rowNumber, height - rowNumber + 1);
         int end = start + 2 * rowNumber - 2;
 
-        List<Position> row = new ArrayList<>();
+        List<IPosition> row = new ArrayList<>();
         int index = 0;
         while (start <= end) {
             row.add(index, board[start]);
@@ -42,7 +70,7 @@ public class Board {
         return row;
     }
 
-    public Position getPosition(int row, int col) {
+    public IPosition getPosition(int row, int col) {
         if (isValid(row, col)) {
             int index = getPositionIndex(row, col);
             return board[index];
@@ -63,13 +91,13 @@ public class Board {
         }
     }
 
-    public void setPosition(Position position)
+    public void setPosition(IPosition position)
         throws IndexOutOfBoundsException {
 
         if (isValid(position.getRow(), position.getCol())) {
             int index = getPositionIndex(position.getRow(), position.getCol());
             ++discCount;
-            board[index] = position;
+            board[index] = new Position(position.getRow(), position.getCol(), position.getOccupiedBy());
         }
         else{
             throw new IndexOutOfBoundsException("board.setPosition(): position is invalid");
@@ -95,5 +123,13 @@ public class Board {
 
         boolean rowIsValid = row > 0 && row < 8;
         return rowIsValid;
+    }
+
+    public int getDiscCount() {
+        return discCount;
+    }
+
+    public final IPosition[] getPositions() {
+        return this.board;
     }
 }

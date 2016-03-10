@@ -2,22 +2,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PositionState {
-    public List<Position> ladder;
-    public List<Position> polarization;
+    public List<IPosition> ladder;
+    public List<IPosition> polarization;
     private Disc stateOwner;
 
-    public PositionState(Position position) {
+    public PositionState(IPosition IPosition) {
         this.ladder = new ArrayList<>();
         this.polarization = new ArrayList<>();
-        this.stateOwner = position.getOccupiedBy();
+        this.stateOwner = IPosition.getOccupiedBy();
     }
 
-    public void addPositionToLadder(Position position) {
-        ladder.add(position);
+    public void addPositionToLadder(IPosition IPosition) {
+        ladder.add(IPosition);
     }
 
-    public void addPositionToPolarization(Position position) {
-        polarization.add(position);
+    public void addPositionToPolarization(IPosition IPosition) {
+        polarization.add(IPosition);
     }
 
     public boolean hasWon() {

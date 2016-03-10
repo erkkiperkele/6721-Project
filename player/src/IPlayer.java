@@ -1,6 +1,6 @@
 public interface IPlayer {
 
-    Position takeTurn();
+    IPosition takeTurn();
     String getName();
 
     Disc getDiscColor();

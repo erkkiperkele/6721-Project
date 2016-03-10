@@ -1,9 +1,9 @@
 public class GameController {
 
-    private IPlayer player1;
-    private IPlayer player2;
+    private IPlayer playerX;
+    private IPlayer playerO;
     private UIConsole console;
-    private BoardController boardController;
+    private BoardSession boardSession;
 
     public GameController() {
         this.console = UIConsole.getInstance();
@@ -22,22 +22,40 @@ public class GameController {
     }
 
     private void setPlayers() {
-        String player1Name = console.askUser("Who plays X?");
-        player1 = new HumanPlayer(console, player1Name, Disc.X);
+        String player1Name = console.askUser("Who plays X? (to use AI, name should start with [AI])");
+        addNewPlayer(player1Name, Disc.X);
 
-        String player2Name = console.askUser("Who plays O?");
-        player2 = new HumanPlayer(console, player2Name, Disc.O);
+        String player2Name = console.askUser("Who plays O? (to use AI, name should start with [AI])");
+        addNewPlayer(player2Name, Disc.O);
+    }
+
+    private void addNewPlayer(String player1Name, Disc disc) {
+
+        IPlayer player = IsAI(player1Name)
+                ? new AIPlayer(console, player1Name, disc)
+                : new HumanPlayer(console, player1Name, disc);
+
+        if (disc == Disc.X){
+            playerX = player;
+        }
+        if (disc == Disc.O){
+            playerO = player;
+        }
+    }
+
+    private boolean IsAI(String playerName) {
+        return playerName.toUpperCase().startsWith("AI ");
     }
 
     private void setBoard() {
-        this.boardController = BoardController.getInstance();
-        console.setBoard(boardController.toString());
+        this.boardSession = BoardSession.getInstance();
+        console.setBoard(boardSession.toString());
         console.displayBoard();
     }
 
     private void play() {
-        Position currentPosition = new Position();
-        IPlayer currentPlayer = player1;
+        IPosition currentPosition = new Position();
+        IPlayer currentPlayer = playerX;
         Disc winner = Disc.None;
 
         while (winner == Disc.None) {
@@ -52,22 +70,22 @@ public class GameController {
                 }
             }
 
-            winner = boardController.getWinner(currentPosition);
+            winner = boardSession.getWinner(currentPosition);
 
-            currentPlayer = currentPlayer == player1
-                    ? player2
-                    : player1;
+            currentPlayer = currentPlayer == playerX
+                    ? playerO
+                    : playerX;
         }
         console.informUser("And the winner is: " + winner);
     }
 
-    private Disc playOn(Position nextPosition) {
+    private Disc playOn(IPosition nextPosition) {
 
-        Disc occupiedBy = boardController.getOccupiedBy(nextPosition.getRow(), nextPosition.getCol());
+        Disc occupiedBy = boardSession.getOccupiedBy(nextPosition.getRow(), nextPosition.getCol());
 
         if (occupiedBy == Disc.None) {
-            boardController.setPosition(nextPosition);
-            console.setBoard(boardController.toString());
+            boardSession.setPosition(nextPosition);
+            console.setBoard(boardSession.toString());
             console.displayBoard();
             occupiedBy = nextPosition.getOccupiedBy();
         } else if (occupiedBy == Disc.O || occupiedBy == Disc.X) {

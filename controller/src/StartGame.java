@@ -1,11 +1,6 @@
 
 public class StartGame {
 
-
-    //Board Size: h^2
-    //Each points has 2 possible winning states for a high of 2
-    //Goal state: (h-2)^2 -> 50 goal states
-
     public static void main(String[] args) {
 
         UIConsole console = UIConsole.getInstance();
@@ -14,7 +9,7 @@ public class StartGame {
         GameController game = new GameController();
 
         boolean wantsToPlay = true;
-        while(wantsToPlay) {
+        while (wantsToPlay) {
             game.startNewGame();
 
             console.reset();

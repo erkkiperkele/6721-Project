@@ -1,19 +1,23 @@
 import java.util.List;
 
-public class BoardController {
-    private static BoardController ourInstance = new BoardController();
+public class BoardSession {
+    private static BoardSession ourInstance = new BoardSession();
 
     private Board board;
 
-    public static BoardController getInstance() {
+    public static BoardSession getInstance() {
         return ourInstance;
     }
 
-    private BoardController() {
+    private BoardSession() {
         this.board = new Board();
     }
 
-    public void setPosition(Position position) {
+    public Board cloneBoard(){
+        return new Board(this.board);
+    }
+
+    public void setPosition(IPosition position) {
         try{
             board.setPosition(position);
         }
@@ -30,7 +34,7 @@ public class BoardController {
         this.board = new Board();
     }
 
-    public Disc getWinner(Position position) {
+    public Disc getWinner(IPosition position) {
 
         Disc winsOnLeft = getWinnerOnDiagonal(position, StateName.Left);
         if (winsOnLeft != null) {
@@ -49,7 +53,7 @@ public class BoardController {
         return Disc.None;
     }
 
-    private Disc getWinnerOnDiagonal(Position position, StateName stateName) {
+    private Disc getWinnerOnDiagonal(IPosition position, StateName stateName) {
         Coor[] stateCoors = coordinatesHelper.getStatesCoor(stateName);
         for (Coor stateCoor : stateCoors) {
             PositionState positionState = getPositionState(position, stateName, stateCoor);
@@ -60,7 +64,7 @@ public class BoardController {
         return null;
     }
 
-    public PositionState getPositionState(Position position, StateName stateName, Coor stateCoor) {
+    public PositionState getPositionState(IPosition position, StateName stateName, Coor stateCoor) {
 
         PositionState positionState = new PositionState(position);
 
@@ -69,7 +73,7 @@ public class BoardController {
 
             int colToCheck = position.getCol() + coor.getX();
             int rowToCheck = position.getRow() + coor.getY();
-            Position currentLadderPos = this.board.getPosition(
+            IPosition currentLadderPos = this.board.getPosition(
                     rowToCheck,
                     colToCheck);
 
@@ -91,7 +95,7 @@ public class BoardController {
 
             int colToCheck = position.getCol() + coor.getX();
             int rowToCheck = position.getRow() + coor.getY();
-            Position currentPolarizationPos = this.board.getPosition(
+            IPosition currentPolarizationPos = this.board.getPosition(
                     rowToCheck,
                     colToCheck);
 
@@ -104,6 +108,7 @@ public class BoardController {
         return positionState;
     }
 
+    //REFACTOR: extract the printing operations.
     public String toString() {
         String boardString = "";
 
@@ -119,13 +124,13 @@ public class BoardController {
     }
 
     private String printRow(int rowNumber) {
-        List<Position> row = board.getRow(rowNumber);
+        List<IPosition> row = board.getRow(rowNumber);
         int whiteSpacesCount = board.getHeight() - rowNumber;
 
         String rowString = printTabs(whiteSpacesCount);
 
-        for (Position position : row) {
-            rowString += position.getOccupiedByString() + "\t";
+        for (IPosition IPosition : row) {
+            rowString += IPosition.getOccupiedByString() + "\t";
         }
         rowString += printTabs(whiteSpacesCount - 1);
         return rowString;
