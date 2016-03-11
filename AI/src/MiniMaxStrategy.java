@@ -15,96 +15,90 @@ public class MiniMaxStrategy {
 
     public IPosition findNextMove(Board currentState) {
 
-        return minimax(currentState, depthBound, this.aiDisc);
+        HeuristicNode currentNode = new HeuristicNode(currentState, null);
+        HeuristicNode evaluatedNode = minimax(currentNode, depthBound, this.aiDisc);
+        return evaluatedNode.getPosition();
     }
 
-    private ScoredPosition minimax(Board currentState, int depth, Disc currentTurn) {
+    private HeuristicNode minimax(HeuristicNode currentNode, int depth, Disc currentTurn) {
 
-
-        Position[] nodesToExtend = Arrays.stream(currentState.getPositions())
+        Position[] nodesToExtend = Arrays.stream(currentNode.getBoard().getPositions())
                 .filter(p -> p.getOccupiedBy() == Disc.None)
                 .toArray(Position[]::new);
 
         boolean isLeaf = nodesToExtend.length == 0;
 
-        if (depth == 0 || isLeaf){
-            return calculateStaticWeightScore(currentState);
+        if (depth == 0 || isLeaf) {
+            return calculateStaticWeightScore(currentNode);
         }
 
-        if(IsMax(currentTurn)){
-            ScoredPosition bestPosition = new ScoredPosition(null, -999999);
+        if (IsMax(currentTurn)) {
+            HeuristicNode bestPosition = null;
 
-            for(Position nodeToExtend : nodesToExtend){
-                Board nextState = extendNode(currentState, nodeToExtend, currentTurn);
+            for (Position nodeToExtend : nodesToExtend) {
+                HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
                 //TODO: calculate next minimax only if currentPlayer didn't win,
                 // else return very high or very low score
 
-                ScoredPosition candidateValue = minimax(nextState, depth - 1, currentTurn.invert());
-                if (candidateValue.getScore() >= bestPosition.getScore()){
+                HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
+                if (bestPosition == null || candidateValue.getScore() >= bestPosition.getScore()) {
 
-                    if(depth == this.depthBound){
-                        Position position = new Position(nodeToExtend.getRow(), nodeToExtend.getCol(), currentTurn);
-                        bestPosition = new ScoredPosition(position, candidateValue.getScore());
-                    }
+                    Position position = new Position(nodeToExtend.getRow(), nodeToExtend.getCol(), currentTurn);
+                    candidateValue.setPosition(position);
+                    bestPosition = candidateValue;
                 }
             }
+
             return bestPosition;
-        }
 
-        else{
-            ScoredPosition worsePosition = new ScoredPosition(null, 999999);
+        } else {
+            HeuristicNode worsePosition = null;
 
-            for(Position nodeToExtend : nodesToExtend){
-                Board nextNode = extendNode(currentState, nodeToExtend, currentTurn);
+            for (Position nodeToExtend : nodesToExtend) {
+                HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
                 //TODO: calculate next minimax only if currentPlayer didn't win,
                 // else return very high or very low score
 
-                ScoredPosition candidateValue = minimax(nextNode, depth - 1, currentTurn.invert());
-                if (candidateValue.getScore() <= worsePosition.getScore()){
+                HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
+                if (worsePosition == null || candidateValue.getScore() <= worsePosition.getScore()) {
                     worsePosition = candidateValue;
                 }
             }
+
             return worsePosition;
         }
-    }
-
-    //REFACTOR: Minimax should not know how to extend a leaf
-    private Board extendNode(Board currentState, Position nodeToExtend, Disc currentTurn){
-        Board newState = new Board(currentState);
-        Position positionToPlay = new Position(nodeToExtend.getRow(), nodeToExtend.getCol(), currentTurn);
-        newState.setPosition(positionToPlay);
-
-        return newState;
     }
 
     /**
      * This simple heuristic checks the static value of each position occupied by AI on the board
      * A board's position score is the sum of the possibilities it offers to attain a goal state (ladder)
      * Added to the possibilities it has to counter a goal state (polarization)
-     * @param state the state to be evaluated
+     *
+     * @param node the state to be evaluated
      * @return the total score for all positions on the board.
      */
-    private ScoredPosition calculateStaticWeightScore(Board state) {
+    private HeuristicNode calculateStaticWeightScore(HeuristicNode node) {
 
-        int boardWeightsSum = Arrays.stream(state.getPositions())
+        int boardWeightsSum = Arrays.stream(node.getBoard().getPositions())
                 .filter(p -> p.getOccupiedBy() == this.aiDisc)
-                .map(p -> (ScoredPosition)boardWeights.getPosition(p.getRow(), p.getCol()))
+                .map(p -> (ScoredPosition) boardWeights.getPosition(p.getRow(), p.getCol()))
                 .mapToInt(s -> s.getScore())
                 .sum();
 
-        int boardCounterWeightSum = Arrays.stream(state.getPositions())
+        int boardCounterWeightSum = Arrays.stream(node.getBoard().getPositions())
                 .filter(p -> p.getOccupiedBy() == this.aiDisc)
-                .map(p -> (ScoredPosition)boardCounterWeights.getPosition(p.getRow(), p.getCol()))
+                .map(p -> (ScoredPosition) boardCounterWeights.getPosition(p.getRow(), p.getCol()))
                 .mapToInt(s -> s.getScore())
                 .sum();
 
-        return new ScoredPosition(null, boardWeightsSum + boardCounterWeightSum);
+        node.setScore(boardWeightsSum + boardCounterWeightSum);
+        return node;
     }
 
 
-    private boolean IsMax(Disc currentDisc){
+    private boolean IsMax(Disc currentDisc) {
         return currentDisc == this.aiDisc;
     }
 }

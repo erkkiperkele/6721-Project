@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -23,16 +22,12 @@ public class UIConsole {
         return instance;
     }
 
-    private String getHeader() {
-        return header;
-    }
-
     private String getBody() {
         return body;
     }
 
     public void setBoard(String body) {
-        this.body = body + "\n";
+        this.body = "\n" + body + "\n";
     }
 
     public String askUser(String question) {
