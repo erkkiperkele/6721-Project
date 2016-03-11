@@ -34,81 +34,10 @@ public class BoardSession {
         this.board = new Board();
     }
 
-    public Disc getWinner(IPosition position) {
-
-        Disc winsOnLeft = getWinnerOnDiagonal(position, StateName.Left);
-        if (winsOnLeft != null) {
-            return winsOnLeft;
-        }
-
-        Disc winsOnRight = getWinnerOnDiagonal(position, StateName.Right);
-        if (winsOnRight != null) {
-            return winsOnRight;
-        }
-
-        if (this.board.isFull()) {
-            return Disc.Tie;
-        }
-
-        return Disc.None;
+    public Disc getWinner(IPosition position){
+        return this.board.getWinner(position);
     }
 
-    private Disc getWinnerOnDiagonal(IPosition position, StateName stateName) {
-        Coor[] stateCoors = coordinatesHelper.getStatesCoor(stateName);
-        for (Coor stateCoor : stateCoors) {
-            PositionState positionState = getPositionState(position, stateName, stateCoor);
-            if (positionState.hasWon()) {
-                return positionState.getOwner();
-            }
-        }
-        return null;
-    }
-
-    public PositionState getPositionState(IPosition position, StateName stateName, Coor stateCoor) {
-
-        PositionState positionState = new PositionState(position);
-
-        Coor[] ladderCoor = coordinatesHelper.getLadderCoor(stateName, stateCoor);
-        for (Coor coor : ladderCoor) {
-
-            int colToCheck = position.getCol() + coor.getX();
-            int rowToCheck = position.getRow() + coor.getY();
-            IPosition currentLadderPos = this.board.getPosition(
-                    rowToCheck,
-                    colToCheck);
-
-            if (currentLadderPos.getOccupiedBy() != position.getOccupiedBy()) {
-                return positionState;
-            }
-            positionState.addPositionToLadder(new Position(currentLadderPos));
-        }
-
-
-        int invert = stateName == StateName.Left
-                ? 1
-                : -1;
-        Coor[] polarizationCoor = new Coor[]{
-                new Coor(ladderCoor[0].getX() + 2 * invert, ladderCoor[0].getY()),
-                new Coor(ladderCoor[0].getX(), ladderCoor[0].getY() + 2)
-        };
-        for (Coor coor : polarizationCoor) {
-
-            int colToCheck = position.getCol() + coor.getX();
-            int rowToCheck = position.getRow() + coor.getY();
-            IPosition currentPolarizationPos = this.board.getPosition(
-                    rowToCheck,
-                    colToCheck);
-
-            if (currentPolarizationPos.getOccupiedBy() != position.getOccupiedBy().invert()) {
-                return positionState;
-            }
-            positionState.addPositionToPolarization(new Position(currentPolarizationPos));
-        }
-
-        return positionState;
-    }
-
-    //REFACTOR: extract the printing operations.
     public String toString() {
         String boardString = "";
 

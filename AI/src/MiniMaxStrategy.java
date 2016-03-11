@@ -15,7 +15,7 @@ public class MiniMaxStrategy {
 
     public IPosition findNextMove(Board currentState) {
 
-        HeuristicNode currentNode = new HeuristicNode(currentState, null);
+        HeuristicNode currentNode = new HeuristicNode(currentState);
         HeuristicNode evaluatedNode = minimax(currentNode, depthBound, this.aiDisc);
         return evaluatedNode.getPosition();
     }
@@ -38,8 +38,10 @@ public class MiniMaxStrategy {
             for (Position nodeToExtend : nodesToExtend) {
                 HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
-                //TODO: calculate next minimax only if currentPlayer didn't win,
-                // else return very high or very low score
+                 if(childNode.willWin()){
+                     childNode.setScore(1000);
+                     return childNode;
+                 }
 
                 HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
                 if (bestPosition == null || candidateValue.getScore() >= bestPosition.getScore()) {
@@ -58,8 +60,10 @@ public class MiniMaxStrategy {
             for (Position nodeToExtend : nodesToExtend) {
                 HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
-                //TODO: calculate next minimax only if currentPlayer didn't win,
-                // else return very high or very low score
+                if(childNode.willWin()){
+                    childNode.setScore(-1000);
+                    return childNode;
+                }
 
                 HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
                 if (worsePosition == null || candidateValue.getScore() <= worsePosition.getScore()) {

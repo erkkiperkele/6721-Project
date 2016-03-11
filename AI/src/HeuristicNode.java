@@ -4,10 +4,15 @@ public class HeuristicNode {
     private int score;
     private Position position;
 
-    public HeuristicNode(Board board, HeuristicNode parentNode) {
+    public HeuristicNode(Board board) {
+        this.board = board;
+    }
+
+    public HeuristicNode(Position nodeToExtend, Board board, HeuristicNode parentNode) {
 
         this.board = board;
         this.parentNode = parentNode;
+        this.position = nodeToExtend;
     }
 
     public Board getBoard() {
@@ -37,8 +42,17 @@ public class HeuristicNode {
         Position positionToPlay = new Position(nodeToExtend.getRow(), nodeToExtend.getCol(), currentTurn);
         newState.setPosition(positionToPlay);
 
-        HeuristicNode childNode = new HeuristicNode(newState, this);
+        HeuristicNode childNode = new HeuristicNode(positionToPlay, newState, this);
 
         return childNode;
+    }
+
+    public boolean willWin(){
+
+        if(this.position != null){
+            return this.board.getWinner(this.position) != Disc.None;
+        }
+
+        return false;
     }
 }
