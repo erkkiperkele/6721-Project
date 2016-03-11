@@ -4,7 +4,7 @@
 Expectation of originality
 --------------------------
 
-See both the 'pdf' and the 'jpg' documents situated in this folder:
+See the following documents (located in same folder as this README file):
 
 * Expectations-of-Originality-Feb14-2012.pdf
 * originalWorkCertification.jpg
