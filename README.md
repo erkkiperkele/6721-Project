@@ -1,5 +1,13 @@
 # 6721-Project: Polarity game
-=============================
+
+
+Expectation of originality
+--------------------------
+
+See both the 'pdf' and the 'jpg' documents situated in this folder:
+
+* Expectations-of-Originality-Feb14-2012.pdf
+* originalWorkCertification.jpg
 
 Possible states board weight
 ----------------------------
