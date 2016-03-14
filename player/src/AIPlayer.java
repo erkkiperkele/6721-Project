@@ -1,12 +1,10 @@
 public class AIPlayer implements IPlayer {
 
-    private UIConsole console;
     private String name;
     private Disc disc;
     private MiniMaxStrategy strategy;
 
     public AIPlayer(UIConsole console, String name, Disc disc) {
-        this.console = console;
         this.name = name;
         this.disc = disc;
         this.strategy = new MiniMaxStrategy(disc);
