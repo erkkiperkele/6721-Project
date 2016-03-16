@@ -104,3 +104,9 @@ Minimax (Wiki)
     13             v := minimax(child, depth − 1, TRUE)
     14             bestValue := min(bestValue, v)
     15         return bestValue
+
+Bug Left
+--------
+
+For some reason, the last position played by O on an AI vs AI
+game is not the right one. It should try to counter X on last position.

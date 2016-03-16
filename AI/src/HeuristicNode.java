@@ -1,7 +1,7 @@
 public class HeuristicNode {
     private Board board;
     private HeuristicNode parentNode;
-    private int score;
+    private double score;
     private Position position;
 
     public HeuristicNode(Board board) {
@@ -19,11 +19,11 @@ public class HeuristicNode {
         return board;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 

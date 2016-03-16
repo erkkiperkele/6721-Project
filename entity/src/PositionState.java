@@ -20,6 +20,10 @@ public class PositionState {
         polarization.add(IPosition);
     }
 
+    public Disc getOwner() {
+        return stateOwner;
+    }
+
     public boolean hasWon() {
 
         Disc opponent = stateOwner == Disc.O
@@ -36,7 +40,39 @@ public class PositionState {
         return positionCount == 5 && polarizationCount != 2;
     }
 
-    public Disc getOwner() {
-        return stateOwner;
+    public boolean canWin() {
+
+        return !isLadderInvalid() && !isCounterPolarized();
+    }
+
+    public boolean isBeingCounterPolarized() {
+        boolean canBeCounterPolarized = !this.polarization
+                .stream()
+                .anyMatch(p -> p.getOccupiedBy() == Disc.Invalid);
+        boolean counterPolarizationHasStarted = getLadderCounterPolarizationCount() == 1;
+
+        return canBeCounterPolarized && counterPolarizationHasStarted;
+    }
+
+    private boolean isLadderInvalid() {
+        return this.ladder
+                .stream()
+                .anyMatch(p ->
+                        (p.getOccupiedBy() == this.getOwner().invert())
+                        ||
+                        (p.getOccupiedBy() == Disc.Invalid)
+                );
+    }
+
+    private boolean isCounterPolarized() {
+
+        return getLadderCounterPolarizationCount() == 2;
+    }
+
+    private long getLadderCounterPolarizationCount() {
+        return this.polarization
+                .stream()
+                .filter(p -> p.getOccupiedBy() == this.getOwner().invert())
+                .count();
     }
 }

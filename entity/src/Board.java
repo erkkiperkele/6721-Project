@@ -175,10 +175,6 @@ public class Board {
             IPosition currentLadderPos = this.getPosition(
                     rowToCheck,
                     colToCheck);
-
-            if (currentLadderPos.getOccupiedBy() != position.getOccupiedBy()) {
-                return positionState;
-            }
             positionState.addPositionToLadder(new Position(currentLadderPos));
         }
 
@@ -190,17 +186,14 @@ public class Board {
                 new Coor(ladderCoor[0].getX() + 2 * invert, ladderCoor[0].getY()),
                 new Coor(ladderCoor[0].getX(), ladderCoor[0].getY() + 2)
         };
-        for (Coor coor : polarizationCoor) {
 
+        for (Coor coor : polarizationCoor) {
             int colToCheck = position.getCol() + coor.getX();
             int rowToCheck = position.getRow() + coor.getY();
             IPosition currentPolarizationPos = this.getPosition(
                     rowToCheck,
                     colToCheck);
 
-            if (currentPolarizationPos.getOccupiedBy() != position.getOccupiedBy().invert()) {
-                return positionState;
-            }
             positionState.addPositionToPolarization(new Position(currentPolarizationPos));
         }
 
