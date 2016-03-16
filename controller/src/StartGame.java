@@ -5,7 +5,6 @@ public class StartGame {
 
         UIConsole console = UIConsole.getInstance();
         console.informUser("Welcome to Pola\n");
-
         GameController game = new GameController();
 
         boolean wantsToPlay = true;

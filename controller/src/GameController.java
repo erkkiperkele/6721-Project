@@ -49,6 +49,7 @@ public class GameController {
 
     private void setBoard() {
         this.boardSession = BoardSession.getInstance();
+        this.boardSession.resetBoard();
         console.setBoard(boardSession.toString());
         console.displayBoard();
     }
