@@ -2,19 +2,27 @@ public class AIPlayer implements IPlayer {
 
     private String name;
     private Disc disc;
-    private MiniMaxStrategy strategy;
+    private MiniMax minimax;
 
     public AIPlayer(String name, Disc disc) {
         this.name = name;
         this.disc = disc;
-        this.strategy = new MiniMaxStrategy(disc);
+
+        this.minimax = new MiniMax(decideOnStrategy(), disc);
+    }
+
+    private IStrategy decideOnStrategy(){
+
+
+        IStrategy strategy = new LadderEvalAndBoardWeightStrategy(this.disc);
+        return strategy;
     }
 
     @Override
     public IPosition takeTurn() {
 
         Board currentBoard = BoardSession.getInstance().cloneBoard();
-        return this.strategy.findNextMove(currentBoard);
+        return this.minimax.findNextMove(currentBoard);
     }
 
     @Override

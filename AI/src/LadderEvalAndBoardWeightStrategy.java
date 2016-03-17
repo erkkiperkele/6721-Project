@@ -1,83 +1,17 @@
 import java.util.Arrays;
 
-public class MiniMaxStrategy {
+public class LadderEvalAndBoardWeightStrategy implements IStrategy {
 
-    private int depthBound = 3;
+
     private Board boardWeights;
     private Board boardCounterWeights;
     private Disc aiDisc;
 
-    public MiniMaxStrategy(Disc aiDisc) {
-        this.boardWeights = BoardWeights.getBoardWeights();
+
+    public LadderEvalAndBoardWeightStrategy(Disc aiDisc) {
         this.boardCounterWeights = BoardWeights.getBoardCounterWeights();
+        this.boardWeights = BoardWeights.getBoardWeights();
         this.aiDisc = aiDisc;
-    }
-
-    public IPosition findNextMove(Board currentState) {
-
-        HeuristicNode currentNode = new HeuristicNode(currentState);
-        HeuristicNode evaluatedNode = minimax(currentNode, depthBound, this.aiDisc);
-        System.out.println("Final Score: " + evaluatedNode.getScore());
-        return evaluatedNode.getPosition();
-    }
-
-    private HeuristicNode minimax(HeuristicNode currentNode, int depth, Disc currentTurn) {
-
-        Position[] nodesToExtend = Arrays.stream(currentNode.getBoard().getPositions())
-                .filter(p -> p.getOccupiedBy() == Disc.None)
-                .toArray(Position[]::new);
-
-        if(nodesToExtend.length < 25){
-            this.depthBound = 4;
-        }
-
-        boolean isLeaf = nodesToExtend.length == 0;
-
-        if (depth == 0 || isLeaf) {
-            return calculateScore(currentNode, currentTurn);
-        }
-
-        if (IsMax(currentTurn)) {
-            HeuristicNode bestPosition = null;
-
-            for (Position nodeToExtend : nodesToExtend) {
-                HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
-
-                if (childNode.willWin()) {
-                    childNode.setScore(1000 - depth);
-                    return childNode;
-                }
-
-                HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
-                if (bestPosition == null || candidateValue.getScore() >= bestPosition.getScore()) {
-
-                    Position position = new Position(nodeToExtend.getRow(), nodeToExtend.getCol(), currentTurn);
-                    candidateValue.setPosition(position);
-                    bestPosition = candidateValue;
-                }
-            }
-
-            return bestPosition;
-
-        } else {
-            HeuristicNode worsePosition = null;
-
-            for (Position nodeToExtend : nodesToExtend) {
-                HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
-
-                if (childNode.willWin()) {
-                    childNode.setScore(-1000 + depth);
-                    return childNode;
-                }
-
-                HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
-                if (worsePosition == null || candidateValue.getScore() <= worsePosition.getScore()) {
-                    worsePosition = candidateValue;
-                }
-            }
-
-            return worsePosition;
-        }
     }
 
     /**
@@ -89,7 +23,8 @@ public class MiniMaxStrategy {
      * @param node
      * @return
      */
-    private HeuristicNode calculateScore(HeuristicNode node, Disc currentTurn) {
+    @Override
+    public HeuristicNode calculateScore(HeuristicNode node, Disc currentTurn) {
 
         double score = 0.0;
 
@@ -177,9 +112,5 @@ public class MiniMaxStrategy {
                 .sum();
 
         return boardWeightsSum + boardCounterWeightSum;
-    }
-
-    private boolean IsMax(Disc currentDisc) {
-        return currentDisc == this.aiDisc;
     }
 }
