@@ -44,7 +44,7 @@ public class MiniMaxStrategy {
                 HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
                 if (childNode.willWin()) {
-                    childNode.setScore(1000 + depth);
+                    childNode.setScore(1000 - depth);
                     return childNode;
                 }
 
@@ -66,7 +66,7 @@ public class MiniMaxStrategy {
                 HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
                 if (childNode.willWin()) {
-                    childNode.setScore(-1000 - depth);
+                    childNode.setScore(-1000 + depth);
                     return childNode;
                 }
 
