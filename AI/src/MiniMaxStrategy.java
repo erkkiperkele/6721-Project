@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class MiniMaxStrategy {
 
-    private final int depthBound = 2;
+    private int depthBound = 3;
     private Board boardWeights;
     private Board boardCounterWeights;
     private Disc aiDisc;
@@ -17,6 +17,7 @@ public class MiniMaxStrategy {
 
         HeuristicNode currentNode = new HeuristicNode(currentState);
         HeuristicNode evaluatedNode = minimax(currentNode, depthBound, this.aiDisc);
+        System.out.println("Final Score: " + evaluatedNode.getScore());
         return evaluatedNode.getPosition();
     }
 
@@ -25,6 +26,10 @@ public class MiniMaxStrategy {
         Position[] nodesToExtend = Arrays.stream(currentNode.getBoard().getPositions())
                 .filter(p -> p.getOccupiedBy() == Disc.None)
                 .toArray(Position[]::new);
+
+        if(nodesToExtend.length < 25){
+            this.depthBound = 4;
+        }
 
         boolean isLeaf = nodesToExtend.length == 0;
 
@@ -38,10 +43,10 @@ public class MiniMaxStrategy {
             for (Position nodeToExtend : nodesToExtend) {
                 HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
-                 if(childNode.willWin()){
-                     childNode.setScore(1000);
-                     return childNode;
-                 }
+                if (childNode.willWin()) {
+                    childNode.setScore(1000 + depth);
+                    return childNode;
+                }
 
                 HeuristicNode candidateValue = minimax(childNode, depth - 1, currentTurn.invert());
                 if (bestPosition == null || candidateValue.getScore() >= bestPosition.getScore()) {
@@ -60,8 +65,8 @@ public class MiniMaxStrategy {
             for (Position nodeToExtend : nodesToExtend) {
                 HeuristicNode childNode = currentNode.extendNode(nodeToExtend, currentTurn);
 
-                if(childNode.willWin()){
-                    childNode.setScore(-1000);
+                if (childNode.willWin()) {
+                    childNode.setScore(-1000 - depth);
                     return childNode;
                 }
 
@@ -79,21 +84,18 @@ public class MiniMaxStrategy {
      * Calculates the score depending on:
      * - how close is the player from winning on all possible states
      * - how important is the position on which the player played
-     *   (important for example at the beginning, when no state is even close to winning to take the best positions)
+     * (important for example at the beginning, when no state is even close to winning to take the best positions)
+     *
      * @param node
      * @return
      */
     private HeuristicNode calculateScore(HeuristicNode node, Disc currentTurn) {
 
         double score = 0.0;
-        int minScoreFactor = IsMax(currentTurn)
-                ? 1
-                : -1;
 
         score += calculateScoreOnDiagonal(node, StateName.Left);
         score += calculateScoreOnDiagonal(node, StateName.Right);
-        score += calculateStaticWeightScore(node);
-        score *= minScoreFactor;
+        score += calculateStaticWeightScore(node);  //Helps decide between 2 states with identical score (eg: 0)
         node.setScore(score);
 
         return node;
@@ -103,9 +105,12 @@ public class MiniMaxStrategy {
 
         Double score = 0.0;
 
+        // This gives you the last position played, other positions have already been calculated
+        IPosition pos = node.getParentNode().getPosition();
+
         Coor[] stateCoors = coordinatesHelper.getStatesCoor(stateName);
         for (Coor stateCoor : stateCoors) {
-            PositionState positionState = node.getBoard().getPositionState(node.getPosition(), stateName, stateCoor);
+            PositionState positionState = node.getBoard().getPositionState(pos, stateName, stateCoor);
             score += calculatePositionStateScore(positionState);
         }
 
@@ -116,28 +121,29 @@ public class MiniMaxStrategy {
      * This method gives a score for a given position depending on:
      * - is the state countered by the opponent
      * - how many discs have already been played on this state (how close am I to win on this state)
+     *
      * @param positionState
      * @return
      */
-    private Double calculatePositionStateScore(PositionState positionState){
+    private Double calculatePositionStateScore(PositionState positionState) {
 
-        Double discScore = 10.0;
+        Double discScore = 1.0;
         Double scoreFactor = 1.0;
         Double totalScore = 0.0;
 
-        if (!positionState.canWin()){
+        if (!positionState.canWin()) {
             return totalScore;
         }
 
-        if(positionState.isBeingCounterPolarized()){
+        if (positionState.isBeingCounterPolarized()) {
             scoreFactor = 0.5;
         }
 
         // -1 because we don't want to count the position currently being evaluated in the final score (so it can be 0)
-        long positionsPlayedOnLadder = positionState.ladder
+        double positionsPlayedOnLadder = positionState.ladder
                 .stream()
                 .filter(p -> p.getOccupiedBy() == positionState.getOwner())
-                .count() -1;
+                .count() - 1;
 
         // Give more importance to a position that has a single state but very close to winning
         // Than to a position that has 10 possible states, but each of those state have a single disc.

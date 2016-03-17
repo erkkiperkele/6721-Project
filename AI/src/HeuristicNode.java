@@ -35,6 +35,10 @@ public class HeuristicNode {
         return position;
     }
 
+    public HeuristicNode getParentNode() {
+        return parentNode;
+    }
+
     public HeuristicNode extendNode(Position nodeToExtend, Disc currentTurn) {
 
 
